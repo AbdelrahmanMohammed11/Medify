@@ -21,3 +21,4 @@ $ conda create -n Medical-rag-app python 3.13.2
 $ conda activate Medical-rag-app
 ```
 
+4) download Ubuntu
