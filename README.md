@@ -21,4 +21,23 @@ $ conda create -n Medical-rag-app python 3.13.2
 $ conda activate Medical-rag-app
 ```
 
-4) download Ubuntu
+## Installation
+
+```bash
+$ pip install -r requirements.txt
+```
+#### setup the environment variables
+
+``` bash
+$ cp .env.example .env
+
+```
+
+set your environment variables in the `.env` file , Like `Chatbot APIs` values
+
+
+## Run FastAPI Server
+
+```bash
+$ uvicorn main:app --reload --host 0.0.0.0 --port 500
+```
