@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     # File upload settings
     FILE_ALLOWED_TYPES: list
     FILE_MAX_ALLOWED_SIZE: int
+    FILE_CHUNK_SIZE: int
 
     class Config:
         env_file = ".env"
