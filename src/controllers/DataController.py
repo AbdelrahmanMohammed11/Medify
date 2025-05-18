@@ -31,9 +31,9 @@ class DataController(BaseController):
 
 
 
-    def generate_random_unique_string(self, 
-                                      original_filename: str, 
-                                      project_id: str):
+    def generate_cleaned_file_path(self, 
+                                    original_filename: str, 
+                                    project_id: str):
         """take the original filename and project id and 
         then generate a unique file name and return the path to the file
         :param original_filename: The original file name to be cleaned.
@@ -42,10 +42,10 @@ class DataController(BaseController):
 
 
 
-        data_controller = DataController()
-        random_string = self.generate_cleaned_file_path()
+        project_controller = ProjectController()
+        random_string = self.generate_random_string()
         
-        project_path = data_controller.make_dir_file(project_id=project_id)
+        project_path = project_controller.make_dir_file(project_id=project_id)
 
         cleaned_filename = self.make_clean_file_name(original_filename=original_filename)
 
@@ -56,7 +56,7 @@ class DataController(BaseController):
             random_string = self.generate_random_string()
             new_file_path = os.path.join(project_path,random_string +"_"+ cleaned_filename)
 
-        return new_file_path
+        return new_file_path, random_string +"_"+ cleaned_filename
 
 
 
@@ -67,6 +67,6 @@ class DataController(BaseController):
         :return: cleaned_filename.
         """
         cleaned_filename = re.sub(r'[^\w.]','', original_filename.strip())
-        cleaned_filename = re.replace(' ', '_')
+        cleaned_filename = cleaned_filename.replace(' ', '_')
         return cleaned_filename
         

@@ -26,4 +26,4 @@ class BaseController:
         :param length: Length of the random string to be generated.
         :return: Random string of fixed length.
         """
-        return ''.join(random.choice(string.ascii_letters + string.digits, k = length))
+        return ''.join(random.choices(string.ascii_letters + string.digits, k = length))
