@@ -1,12 +1,13 @@
 from fastapi import APIRouter, FastAPI 
-from dotenv import load_dotenv
 import os
-load_dotenv(".env")
+from helpers.config import get_settings
+
 
 base_router = APIRouter(prefix="/base",
                         tags=["base"])
 @base_router.get("/")
 async def read_root():
-    app_name = os.getenv("APP_NAME")
-    app_version = os.getenv("APP_VERSION")
+    app_settings = get_settings()
+    app_name = app_settings.APP_NAME.value
+    app_version = app_settings.APP_VERSION.value
     return {"app_name": app_name, "app_version": app_version}
