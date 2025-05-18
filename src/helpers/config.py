@@ -5,8 +5,6 @@ class Settings(BaseSettings):
     APP_VERSION: str
     class Config:
         env_file = ".env"
-        case_sensitive = True
-        validate_assignment = True
 
 
 def get_settings():
