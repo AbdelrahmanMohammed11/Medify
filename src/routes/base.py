@@ -1,13 +1,13 @@
 from fastapi import APIRouter, FastAPI, Depends
 import os
-from helpers.config import get_settings
+from helpers.config import get_settings , Settings
 
 
 base_router = APIRouter(prefix="/base",
                         tags=["base"])
 
 @base_router.get("/")
-async def read_root(app_settings=Depends(get_settings)):
+async def read_root(app_settings : Settings=Depends(get_settings)):
     app_name = app_settings.APP_NAME
     app_version = app_settings.APP_VERSION
     return {"app_name": app_name, "app_version": app_version}
