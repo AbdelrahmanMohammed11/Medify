@@ -1,5 +1,6 @@
 from .BaseController import BaseController
 from fastapi import  Depends, UploadFile
+from models import ResponseStatus
 
 class DataController(BaseController):
     """
@@ -13,9 +14,10 @@ class DataController(BaseController):
 
         # Initialize any additional attributes or methods specific to DataController here
     def validate_uploaded_file(self, file:UploadFile):
+
         if file.content_type not in self.app_settings.FILE_ALLOWED_TYPES:
-            return False
+            return False, ResponseStatus.FILE_TYPE_INVALID.value
         if file.size > self.app_settings.FILE_MAX_ALLOWED_SIZE * self.size_scale:
-            return False
+            return False, ResponseStatus.FILE_SIZE_EXCEEDED.value
         
-        return True
+        return True, ResponseStatus.FILE_UPLOADED_SUCCESSFULLY.value
