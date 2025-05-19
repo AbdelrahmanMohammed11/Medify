@@ -48,6 +48,7 @@ async def upload_data(project_id: str, file: UploadFile,
             while chunk := await file.read(app_settings.FILE_CHUNK_SIZE):
                 await file_out.write(chunk)
     
+    
     except Exception as e:
         logger.error(f"Error while uploading file: {e}")
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
@@ -57,13 +58,6 @@ async def upload_data(project_id: str, file: UploadFile,
 
     return JSONResponse(content={"File uploaded successfully": ResponseStatus.FILE_UPLOADED_SUCCESSFULLY.value,
                                  "file_id": file_id})
-
-
-
-
-
-
-
 
 
 
@@ -78,13 +72,8 @@ async def process_endpoint(project_id: str,
     chunk_size = request.chunk_size
     overlap = request.overlap
 
-
-
-
     process_controller = ProcessController(project_id=project_id)
-
-
-
+    
     # get the file content
     file_content = process_controller.get_file_content(file_id=file_id)
 
