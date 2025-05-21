@@ -13,3 +13,5 @@ langchain-community==0.3.24
 langchain-text-splitters==0.3.8
 asyncpg==0.30.0
 SQLAlchemy==2.0.41
+alembic==1.15.2
+psycopg2==2.9.10
