@@ -3,7 +3,6 @@ import os
 import random
 import string
 
-
 class BaseController:
     """
     Base controller class to be inherited by all controllers.
@@ -15,9 +14,9 @@ class BaseController:
 
         # Get the base directory of the application
         
-        self.base_directory = os.path.dirname(os.path.abspath(__file__))
+        self.base_directory = os.path.dirname(os.path.abspath("."))
         self.file_directory = os.path.join(self.base_directory,
-                                            "assets/files")
+                                            "src/assets/files")
         
 
     def generate_random_string(self, length: int = 10):
