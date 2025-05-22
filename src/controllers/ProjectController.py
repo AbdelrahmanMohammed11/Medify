@@ -19,7 +19,7 @@ class ProjectController(BaseController):
         :return: The path to the project directory.
         """
         project_directory = os.path.join(self.file_directory,
-                                          project_id)
+                                          str(project_id))
         
         # Check if the project directory exists
         if not os.path.exists(project_directory):
