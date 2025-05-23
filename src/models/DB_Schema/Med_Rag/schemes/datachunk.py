@@ -19,7 +19,7 @@ class DataChunk(MedRagBaseSqlBase):
                           nullable=False)
     chunk_content = Column(String, nullable=False)
     chunk_metadata= Column(JSONB, nullable=False)
-    chunk_asset_id = Column(ForeignKey('assets.asset_id'),nullable=False)
+    chunk_asset_id = Column(ForeignKey('assets.asset_id'),nullable=True)
     chunk_project_id = Column(ForeignKey('projects.project_id'),nullable=False)
 
     project = relationship("Project", back_populates='chunks')

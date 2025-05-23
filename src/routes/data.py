@@ -8,6 +8,10 @@ import aiofiles
 import logging
 from .schemes.data import MakeRequest
 from models.ProjectModel import ProjectModel
+from models.DataChunkModel import DataChunkModel
+from models.DB_Schema.Med_Rag.schemes import DataChunk
+from models.DB_Schema.Med_Rag.schemes import Project
+
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -75,11 +79,20 @@ async def upload_data(request: Request ,project_id: int, file: UploadFile,
 
 
 @data_router.post("/process/{project_id}")
-async def process_endpoint(project_id: str, 
+async def process_endpoint(apprequest: Request, project_id: str, 
                         request: MakeRequest):
     """
     Process the data for the given project ID.
     """
+
+    project_model = ProjectModel(
+        db_clint= apprequest.app.database_clint
+    )
+
+    project = await project_model.get_project_or_create_new_one(
+        project_id=int(project_id)
+    )
+    
 
     file_id = request.file_id
     chunk_size = request.chunk_size
@@ -99,10 +112,33 @@ async def process_endpoint(project_id: str,
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
                             content={"Error": ResponseStatus.PROCESSING_FAILED.value})
     
-    return file_chunks
+    # Save the chunks to the database
+    chunk_model = DataChunkModel(
+        db_clint= apprequest.app.database_clint
+    )
+    project_model = ProjectModel(
+        db_clint= apprequest.app.database_clint
+    )
 
+    project = await project_model.get_project_or_create_new_one(
+        project_id=int(project_id)
+    )
+    # create the chunks
+    chunks = [
+        DataChunk(
+                chunk_content=chunk.page_content,
+                chunk_project_id= project.project_id,
+                chunk_metadata= chunk.metadata,
+            )
+        for i, chunk in enumerate(file_chunks)
+    ]
 
+    # insert the chunks into the database
+    records = await chunk_model.insert_many_chunks(chunks)
 
+    return records
+
+    
 
 
 

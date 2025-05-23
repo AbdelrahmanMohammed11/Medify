@@ -52,7 +52,8 @@ class DataChunkModel(BaseDataModel):
             return chunk
     
 # ------------------------------------------------------------------------------------
-    async def insert_many_chunks(self, chunks: list, batch_size: int = 300):
+
+    async def insert_many_chunks(self, chunks: list, batch_size: int = 100):
         """
         Create a new chunk in the database.
         """
@@ -65,6 +66,8 @@ class DataChunkModel(BaseDataModel):
         return len(chunks)
     
     # Delete function, get_all_chunks
+
+
     
  
 
