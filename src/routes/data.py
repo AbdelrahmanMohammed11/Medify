@@ -85,6 +85,13 @@ async def process_endpoint(apprequest: Request, project_id: str,
     Process the data for the given project ID.
     """
 
+    # Extract the parameters from the request
+    file_id = request.file_id
+    chunk_size = request.chunk_size
+    overlap = request.overlap
+    do_reset = request.do_reset
+
+
     project_model = ProjectModel(
         db_clint= apprequest.app.database_clint
     )
@@ -92,11 +99,12 @@ async def process_endpoint(apprequest: Request, project_id: str,
     project = await project_model.get_project_or_create_new_one(
         project_id=int(project_id)
     )
-    
 
-    file_id = request.file_id
-    chunk_size = request.chunk_size
-    overlap = request.overlap
+
+
+
+
+
 
     process_controller = ProcessController(project_id=project_id)
     
@@ -113,12 +121,8 @@ async def process_endpoint(apprequest: Request, project_id: str,
                             content={"Error": ResponseStatus.PROCESSING_FAILED.value})
     
     # Save the chunks to the database
-    chunk_model = DataChunkModel(
-        db_clint= apprequest.app.database_clint
-    )
-    project_model = ProjectModel(
-        db_clint= apprequest.app.database_clint
-    )
+
+
 
     project = await project_model.get_project_or_create_new_one(
         project_id=int(project_id)
@@ -133,10 +137,19 @@ async def process_endpoint(apprequest: Request, project_id: str,
         for i, chunk in enumerate(file_chunks)
     ]
 
+    chunk_model = DataChunkModel(
+        db_clint= apprequest.app.database_clint
+    )
+
+      
     # insert the chunks into the database
     records = await chunk_model.insert_many_chunks(chunks)
 
-    return records
+    return JSONResponse(
+        content={
+            "File processed successfully": ResponseStatus.PROCESSING_SUCCESS.value,
+            "Chunks": records
+                      })
 
     
 

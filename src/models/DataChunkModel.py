@@ -67,6 +67,22 @@ class DataChunkModel(BaseDataModel):
     
     # Delete function, get_all_chunks
 
+    async def delete_chunk_by_projectID(self, project_id: int):
+        """
+        Delete a chunk by its project ID.
+        Args:
+            project_id (int): The id of the project to delete the related chuncks.
+        Returns:
+            result.rowcount: The deleted count.
+        """
+
+        async with self.db_clint() as session:
+            # retrieve the chunk by its ID
+            query = delete(DataChunk).where(DataChunk.chunk_project_id == project_id)
+            result = await session.execute(query)
+            await session.commit()
+        return result.rowcount
+
 
     
  
