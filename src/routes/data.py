@@ -4,6 +4,7 @@ import os
 from helpers.config import get_settings , Settings
 from controllers import DataController , ProjectController, ProcessController
 from models import ResponseStatus
+from models.enums.AssetTypeEnums import AssetTypeEnums
 import aiofiles
 import logging
 from .schemes.data import MakeRequest
@@ -11,6 +12,9 @@ from models.ProjectModel import ProjectModel
 from models.DataChunkModel import DataChunkModel
 from models.DB_Schema.Med_Rag.schemes import DataChunk
 from models.DB_Schema.Med_Rag.schemes import Project
+from models.DB_Schema.Med_Rag.schemes import Asset
+from models.AssetModel import AssetModel
+
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -68,9 +72,29 @@ async def upload_data(request: Request ,project_id: int, file: UploadFile,
                                     "Error:": ResponseStatus.FILE_UPLOADED_FAILED.value
                                     })
 
+
+    # Create an asset record in the database
+    asset_model = AssetModel(
+        db_clint= request.app.database_clint
+    )
+
+    asset = Asset(
+        asset_project_id = int(project.project_id),
+        asset_type = AssetTypeEnums.FILE.value,
+        asset_name = file_id,
+        asset_size = os.path.getsize(file_path),
+        asset_metadata = {
+            "original_filename": file.filename,
+            "file_path": file_path
+        })
+
+    # Save the asset to the database
+    asset_rec = await asset_model.create_asset(asset=asset)
+
+
     return JSONResponse(
         content={"File uploaded successfully": ResponseStatus.FILE_UPLOADED_SUCCESSFULLY.value,
-                 "file_id": file_id,
+                 "file_id": asset_rec.asset_id,
                  "project_id": str(project.project_id)
                    })
 

@@ -26,6 +26,7 @@ $ conda activate Medical-rag-app
 ```bash
 $ pip install -r requirements.txt
 ```
+
 #### setup the environment variables
 
 ``` bash
@@ -34,6 +35,19 @@ $ cp .env.example .env
 ```
 
 set your environment variables in the `.env` file , Like `Chatbot APIs` values
+
+
+
+
+## Run Docker Compose Services
+```bash
+$ cd docker
+$ cp .env.example .env
+```
+- update `.env` with your credentials
+
+
+
 
 
 ## Run FastAPI Server

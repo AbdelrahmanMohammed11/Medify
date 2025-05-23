@@ -34,7 +34,7 @@ class AssetModel(BaseDataModel):
 
         return asset
     
-    async def get_all_assets_of_project(self, asset_project_id:str, asset_type: str):
+    async def get_all_assets_of_project(self, asset_project_id:int, asset_type: str):
 
             async with self.db_clint() as session:
 
@@ -47,7 +47,7 @@ class AssetModel(BaseDataModel):
                  records = query.scalars().all()
             return records 
     
-    async def get_asset(self, asset_project_id:str, asset_type: str):
+    async def get_asset(self, asset_project_id:int, asset_type: str):
 
             async with self.db_clint() as session:
 
