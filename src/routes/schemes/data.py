@@ -12,7 +12,7 @@ class MakeRequest(BaseModel):
     Make a request model for the data scheme.
     """
     #project_id: Optional[str] = '1'
-    file_id: str
+    file_id: str = None
     chunk_size: Optional[int] = 150
     overlap: Optional[int] = 20 
     do_reset: Optional[int] = 0 # 0 for false, 1 for true

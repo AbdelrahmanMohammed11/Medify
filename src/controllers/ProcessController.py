@@ -41,6 +41,10 @@ class ProcessController(BaseController):
         file_path = os.path.join(self.file_directory,
                                   file_id)
         
+        # check if the file exists
+        if not os.path.exists(file_path):
+            return None
+
 
         if file_extension == ProcessStatus.TEXT.value:
             return TextLoader(file_path, encoding="utf-8")
@@ -57,12 +61,16 @@ class ProcessController(BaseController):
         :param file_path: The path to the file.
         :return: The content of the file.
         """
+
         # get the file loader
         file_loader = self.get_file_loader(file_id=file_id)
+        # check if the file loader is None
+        if file_loader:
         # load the document
-        document = file_loader.load()
-        return document
-    
+            document = file_loader.load()
+            return document
+        else:
+            return None
 
     def split_file_content(self, file_content: list,
                            file_id: str,

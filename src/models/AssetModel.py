@@ -47,15 +47,15 @@ class AssetModel(BaseDataModel):
                  records = query.scalars().all()
             return records 
     
-    async def get_asset(self, asset_project_id:int, asset_type: str):
+    async def get_asset(self, asset_project_id:int, asset_name: str):
 
             async with self.db_clint() as session:
 
                  query = await session.execute(
                       select(Asset).where(
                             Asset.asset_project_id == asset_project_id,
-                            Asset.asset_type == asset_type
+                            Asset.asset_name == asset_name
                       )
                       )
-                 records = query.scalars_one_or_none()
+                 records = query.scalar_one_or_none()
             return records
