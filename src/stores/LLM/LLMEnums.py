@@ -8,3 +8,8 @@ class openAIEnums(Enum):
     SYSTEM = "system"
     USER = "user"
     ASISTANT = "assistant"
+
+class CoHereEnums(Enum):
+    SYSTEM = "SYSTEM"
+    USER = "USER"
+    ASISTANT = "CHATBOT"
