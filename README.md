@@ -4,7 +4,7 @@ This project is a medical chatbot
 
 ## Requirements
 
-- python 3.13.2 or later
+- python 3.12 or later
 
 
 ### install Python using MiniConda
@@ -13,7 +13,7 @@ This project is a medical chatbot
 
 2) Create a new environment using following command:
 ```bash
-$ conda create -n Medical-rag-app python 3.13.2
+$ conda create -n Medical-rag-app python 3.12
 ```
 
 3) Activate the environment
