@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-
 from routes import base
 from helpers.config import get_settings
 from routes import data
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+from stores.LLM.LLMProviderFactory import LLMProviderFactory
 
 app = FastAPI()
 async def startup():
@@ -19,8 +19,23 @@ async def startup():
     app.database_clint = sessionmaker(app.database_engine, 
                                     expire_on_commit=False, 
                                     class_=AsyncSession)
-
-
+    
+    llm_provider_factory = LLMProviderFactory(settings)
+    
+    # Generation Client
+    app.generation_client = llm_provider_factory.get_provider(
+        provider =settings.GENERATION 
+        )
+    
+    # Embedding Client
+    app.embedding_client = llm_provider_factory.get_provider(
+        provider =settings.EMBEDDING 
+        )
+    app.embedding_client.set_embedding_model(
+        model_id= settings.EMBEDDING_MODEL_ID,
+        embedding_size= settings.EMBEDDING_SIZE
+        
+    )
 
 
 

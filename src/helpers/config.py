@@ -16,6 +16,22 @@ class Settings(BaseSettings):
     POSTGRES_DATABASE:str
     POSTGRES_HOST:str
 
+    GENERATION : str
+    EMBEDDING :str
+
+    # OpenAI Config
+    OPENAI_API_KEY :str = None
+    OPENAI_URL :str = None
+    COHERE_API_KEY :str = None
+
+    GENERATION_MODEL_ID :str= None
+    EMBEDDING_MODEL_ID :str= None
+    EMBEDDING_SIZE :str= None
+
+    INPUT_DEFUALT_MAX_CHARACTERS  :int= None
+    GENERATION_DEFAULT_MAX_OUTPUT_TOKENS :int= None
+    GENERATION_DEFAULT_TEMPERATURE :float= None
+
     class Config:
         env_file = ".env"
         extra = "allow"

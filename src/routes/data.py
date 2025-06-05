@@ -15,8 +15,6 @@ from models.DB_Schema.Med_Rag.schemes import Project
 from models.DB_Schema.Med_Rag.schemes import Asset
 from models.AssetModel import AssetModel
 
-
-
 logger = logging.getLogger("uvicorn.error")
 
 
