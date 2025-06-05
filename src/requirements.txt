@@ -17,3 +17,5 @@ alembic==1.15.2
 psycopg2==2.9.10
 openai==1.82.0
 cohere==5.15.0
+pgvector==0.4.1
+nltk==3.9.1
