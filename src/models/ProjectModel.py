@@ -46,7 +46,7 @@ class ProjectModel(BaseDataModel):
                 async with session.begin():
                      
                     # Check if the project already exists
-                     query = select(Project).where(Project.project_id == project_id)
+                     query = select(Project).where(Project.project_id == int(project_id))
                      result = await session.execute(query)
                      project = result.scalar_one_or_none()
                      if project is None:

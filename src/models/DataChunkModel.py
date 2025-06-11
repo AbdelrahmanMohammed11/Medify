@@ -5,7 +5,6 @@ from sqlalchemy.future import select
 from sqlalchemy import func, delete
 
 
-
 class DataChunkModel(BaseDataModel):
     
     def __init__(self, db_clint: object):
@@ -82,7 +81,23 @@ class DataChunkModel(BaseDataModel):
             result = await session.execute(query)
             await session.commit()
         return result.rowcount
-
+    
+    async def get_project_chunks(self, project_id: int, page_no:int=1, page_size:int= 50):
+        async with self.db_clint() as session:
+            stmt = select(DataChunk).where(DataChunk.chunk_project_id == project_id).offset((page_no -1)*page_size).limit(page_size)
+            result = await session.execute(stmt)
+            records = result.scalars().all()
+        return records
+            
+    
+    async def get_total_chunk_count(self, project_id: int):
+        total_count = 0
+        async with self.db_clint() as session:
+            count_sql = select(func.count(DataChunk.chunk_id)).where(DataChunk.chunk_project_id==project_id)
+            rec_counts = await session.execute(count_sql)
+            total_count = rec_counts.scalar()
+            
+        return total_count
 
     
  

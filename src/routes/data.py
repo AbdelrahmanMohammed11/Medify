@@ -14,6 +14,10 @@ from models.DB_Schema.Med_Rag.schemes import DataChunk
 from models.DB_Schema.Med_Rag.schemes import Project
 from models.DB_Schema.Med_Rag.schemes import Asset
 from models.AssetModel import AssetModel
+from controllers import NLPController
+
+
+
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -124,12 +128,15 @@ async def process_endpoint(apprequest: Request, project_id: str,
     project = await project_model.get_project_or_create_new_one(
         project_id=int(project_id)
     )
+    
+    nlp_controller = NLPController(
+        vectordb_client = apprequest.app.vectordb_client,
+        generation_client=apprequest.app.generation_client,
+        embedding_client=apprequest.app.embedding_client,
+        template_parser=apprequest.app.template_parser
+    )
 
-    if do_reset== 1:
-
-        _ = await chunk_model.delete_chunk_by_projectID(
-            project_id=int(project.project_id)
-        )
+    
 
 
     """
@@ -199,6 +206,17 @@ async def process_endpoint(apprequest: Request, project_id: str,
 
     records = 0
     num_of_files = 0
+    
+    if do_reset== 1:
+        #delete associated vectors collection
+        collection_name = nlp_controller.create_collection_name(project_id=project.project_id)
+        _ = await apprequest.app.vectordb_client.delete_collection(collection_name=collection_name)
+        
+        #delete associated Chunks
+        _ = await chunk_model.delete_chunk_by_projectID(
+            project_id=int(project.project_id)
+        )
+        
 
     for asset_id, file_id in file_name_and_id.items():
         # get the file content
@@ -223,6 +241,7 @@ async def process_endpoint(apprequest: Request, project_id: str,
         project = await project_model.get_project_or_create_new_one(
             project_id=int(project_id)
         )
+        
         # create the chunks
         chunks = [
             DataChunk(

@@ -18,6 +18,13 @@ class BaseController:
         self.file_directory = os.path.join(self.base_directory,
                                             "src/assets/files")
         
+    """ 
+        self.database_dir = os.path.join(
+            self.base_directory,
+            "src/assets/database"
+        )
+        """
+        
 
     def generate_random_string(self, length: int = 10):
         """
@@ -26,3 +33,19 @@ class BaseController:
         :return: Random string of fixed length.
         """
         return ''.join(random.choices(string.ascii_letters + string.digits, k = length))
+    
+    
+    """
+    def get_database_path(self, DataBase_name:str):
+        
+        database_path = os.path.join(
+            self.database_dir, 
+            DataBase_name
+        )
+        
+        if not os.path.exists(database_path):
+            os.makedirs(database_path)
+        
+        return database_path
+        
+        """

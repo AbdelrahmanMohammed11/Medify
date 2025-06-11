@@ -26,11 +26,21 @@ class Settings(BaseSettings):
 
     GENERATION_MODEL_ID :str= None
     EMBEDDING_MODEL_ID :str= None
-    EMBEDDING_SIZE :str= None
+    EMBEDDING_MODEL_SIZE :int= None
 
     INPUT_DEFUALT_MAX_CHARACTERS  :int= None
     GENERATION_DEFAULT_MAX_OUTPUT_TOKENS :int= None
     GENERATION_DEFAULT_TEMPERATURE :float= None
+    
+    # ------Vector DB ------
+    VECTOR_DATABASE_BACKEND :str
+    VECTOR_DESTANCE_METHOD :str = None
+    VECTOR_DATABASE_INDEX_THRESHOLD: int = 1000
+    
+    #============ Templates ==========
+    
+    DEFAULT_LANG:str
+    PRIMARY_LANG:str
 
     class Config:
         env_file = ".env"
