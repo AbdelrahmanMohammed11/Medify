@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Medical Files{% endblock %}
+
+{% block content %}
+<h1>Upload Medical Documents</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="project_id">Project ID:</label>
+        <input type="text" id="project_id" name="project_id" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="file">Select File:</label>
+        <input type="file" id="file" name="file" accept=".pdf,.txt" required>
+    </div>
+    
+    <button type="submit">Upload</button>
+</form>
+
+<div id="uploadStatus"></div>
+
+<script>
+document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('file', document.getElementById('file').files[0]);
+    formData.append('project_id', document.getElementById('project_id').value);
+    
+    try {
+        const response = await fetch('/base/data/upload/' + document.getElementById('project_id').value, {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        document.getElementById('uploadStatus').innerHTML = `
+            <div class="alert success">
+                ${result['File uploaded successfully']}
+                <br>File ID: ${result.file_id}
+            </div>
+        `;
+    } catch (error) {
+        document.getElementById('uploadStatus').innerHTML = `
+            <div class="alert error">Upload failed: ${error.message}</div>
+        `;
+    }
+});
+</script>
+{% endblock %}

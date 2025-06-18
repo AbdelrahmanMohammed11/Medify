@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Medical RAG Search{% endblock %}
+
+{% block content %}
+<h1>Medical Knowledge Search</h1>
+<form id="searchForm">
+    <div class="form-group">
+        <label for="search_project_id">Project ID:</label>
+        <input type="text" id="search_project_id" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="search_query">Medical Query:</label>
+        <textarea id="search_query" rows="3" required></textarea>
+    </div>
+    
+    <button type="submit">Search</button>
+</form>
+
+<div id="searchResults"></div>
+
+<script>
+document.getElementById('searchForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const projectId = document.getElementById('search_project_id').value;
+    const query = document.getElementById('search_query').value;
+    
+    try {
+        const result = await MedRAGClient.searchIndex(projectId, query);
+        
+        let resultsHTML = '<div class="results-container">';
+        result.results.forEach(item => {
+            resultsHTML += `
+                <div class="result-item">
+                    <h3>Relevance: ${item.score.toFixed(2)}</h3>
+                    <p>${item.text}</p>
+                </div>
+            `;
+        });
+        resultsHTML += '</div>';
+        
+        document.getElementById('searchResults').innerHTML = resultsHTML;
+    } catch (error) {
+        document.getElementById('searchResults').innerHTML = `
+            <div class="alert error">Search failed: ${error.message}</div>
+        `;
+    }
+});
+</script>
+{% endblock %}

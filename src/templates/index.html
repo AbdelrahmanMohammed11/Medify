@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Document Processing{% endblock %}
+
+{% block content %}
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Welcome to MED-RAG</h1>
+            <p>Advanced Medical Document Processing and Analysis</p>
+            <div class="cta-buttons">
+                <a href="/upload" class="btn-primary">Get Started</a>
+                <a href="#learn-more" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </main>
+
+    <section class="features">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Document Upload</h3>
+                    <p>Upload your medical documents in various formats</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Processing</h3>
+                    <p>Process documents with advanced NLP techniques</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Search</h3>
+                    <p>Search through processed documents with precision</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="learn-more" class="project-description-section">
+    <div class="container project-description-container text-center">
+        <div class="project-description-image ">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy5PkoPhlui5vV7g_K6FXxcm2KpOusEm6ahQ&s" alt="Creative Medical AI" style="width:100%;border-radius:16px;box-shadow:0 4px 24px rgba(37,99,235,0.08);max-width:350px;">
+        </div>
+        <div class="project-description-text">
+            <h2>About MED-RAG</h2>
+            <p>
+                <strong>MED-RAG</strong> is an intelligent platform for medical document management and question answering. Effortlessly upload, process, and search medical documents using advanced Natural Language Processing (NLP) and Retrieval-Augmented Generation (RAG) models. Ask complex medical questions and get AI-generated answers grounded in your uploaded data.<br><br>
+                Designed for healthcare professionals, researchers, and students, MED-RAG brings together secure document handling, semantic search, and state-of-the-art generative AI in one seamless experience. <br><br>
+                <em>Empowering you to unlock insights from your medical documents—instantly.</em>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

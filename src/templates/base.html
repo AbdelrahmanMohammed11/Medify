@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MED-RAG | {% block title %}{% endblock %}</title>
+    <link href="/static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>MED-RAG</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/upload">Upload</a>
+                <a href="/process">Process</a>
+                <a href="/search">Search</a>
+                <a href="/answer">Ask AI</a>
+            </div>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

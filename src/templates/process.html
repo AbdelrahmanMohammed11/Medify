@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Process Documents{% endblock %}
+
+{% block content %}
+<h1>Process Medical Documents</h1>
+<form id="processForm">
+    <div class="form-group">
+        <label for="process_project_id">Project ID:</label>
+        <input type="text" id="process_project_id" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="chunk_size">Chunk Size:</label>
+        <input type="number" id="chunk_size" value="500" min="100" max="2000">
+    </div>
+    
+    <div class="form-group">
+        <label for="overlap">Chunk Overlap:</label>
+        <input type="number" id="overlap" value="50" min="0" max="500">
+    </div>
+    
+    <div class="form-group">
+        <input type="checkbox" id="do_reset">
+        <label for="do_reset">Clear existing data</label>
+    </div>
+    
+    <button type="submit">Process Documents</button>
+</form>
+
+<div id="processResults"></div>
+
+<script>
+document.getElementById('processForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const config = {
+        chunk_size: parseInt(document.getElementById('chunk_size').value),
+        overlap: parseInt(document.getElementById('overlap').value),
+        do_reset: document.getElementById('do_reset').checked ? 1 : 0
+    };
+    
+    try {
+        const projectId = document.getElementById('process_project_id').value;
+        const result = await MedRAGClient.processFiles(projectId, config);
+        
+        document.getElementById('processResults').innerHTML = `
+            <div class="alert success">
+                Processed ${result['Chunks']} chunks from ${result['Number of files processed']} files
+            </div>
+        `;
+    } catch (error) {
+        document.getElementById('processResults').innerHTML = `
+            <div class="alert error">Processing failed: ${error.message}</div>
+        `;
+    }
+});
+</script>
+{% endblock %}

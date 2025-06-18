@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from routes import base, nlp
 from helpers.config import get_settings
 from routes import data
@@ -7,9 +9,47 @@ from sqlalchemy.orm import sessionmaker
 from stores.LLM.LLMProviderFactory import LLMProviderFactory
 from stores.VectorDataBase.VectorDataBaseFactory import VectorDataBaseFactory
 from stores.LLM.template.template_parser import TemplateParser
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+# --- CORS Middleware ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change to your frontend URL for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Configure templates and static files
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Add these new routes before your API routers
+@app.get("/", include_in_schema=False)
+async def dashboard(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/upload", include_in_schema=False)
+async def upload_page(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
+
+@app.get("/process", include_in_schema=False)
+async def process_page(request: Request):
+    return templates.TemplateResponse("process.html", {"request": request})
+
+@app.get("/search", include_in_schema=False)
+async def search_page(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
+
+@app.get("/answer", include_in_schema=False)
+async def answer_page(request: Request):
+    return templates.TemplateResponse("answer.html", {"request": request})
+
+
+
 async def startup():
     settings = get_settings()
 

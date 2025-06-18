@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Ask AI{% endblock %}
+
+{% block content %}
+<div class="ask-ai-wrapper">
+    <h2 class="ask-ai-title">Ask the AI</h2>
+    <form id="askForm" class="ask-form">
+        <div class="form-group">
+            <label for="user_question">Your Question</label>
+            <input type="text" id="user_question" name="user_question" placeholder="Type your medical question..." required autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="retrieval_limit">Number of Documents to Retrieve</label>
+            <input type="number" id="retrieval_limit" name="retrieval_limit" min="1" max="20" value="5" style="max-width:120px;">
+        </div>
+        <button type="submit" class="btn-primary">Get Answer</button>
+    </form>
+    <div id="aiAnswer" class="ai-answer-card" style="display:none;"></div>
+</div>
+<script>
+// Set your ngrok URL here:
+const BACKEND_URL = 'http://127.0.0.1:8000/api/nlp/index/answer/1';
+
+document.getElementById('askForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const question = document.getElementById('user_question').value;
+    const limit = document.getElementById('retrieval_limit').value;
+    const answerDiv = document.getElementById('aiAnswer');
+    answerDiv.style.display = 'block';
+    answerDiv.innerHTML = '<div class="loading">Thinking...</div>';
+    try {
+        // POST to the backend server (matching Postman)
+        const response = await fetch(BACKEND_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: question, limit: Number(limit) })
+        });
+        const raw = await response.text();
+        console.log('Raw response:', raw); // For debugging
+        const result = JSON.parse(raw);
+        answerDiv.innerHTML = `<div class="ai-answer"><strong>AI:</strong> ${result.answer || 'No answer returned.'}</div>`;
+    } catch (err) {
+        answerDiv.innerHTML = `<div class="alert error">Error: ${err.message}</div>`;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}RAG Results{% endblock %}
+
+{% block content %}
+<h1>Medical Knowledge Response</h1>
+
+<div class="result-container">
+    <div class="query-section">
+        <h2>Your Query:</h2>
+        <p id="userQuery">{{ query }}</p>
+    </div>
+
+    <div class="answer-section">
+        <h2>AI Response:</h2>
+        <div class="answer-box" id="aiAnswer">
+            {{ answer }}
+        </div>
+    </div>
+
+    <div class="technical-details">
+        <button id="toggleDetails" class="btn-secondary">Show Technical Details</button>
+        <div id="detailsContent" style="display:none;">
+            <h3>Prompt Engineering:</h3>
+            <pre>{{ full_prompt }}</pre>
+            
+            <h3>Chat History:</h3>
+            <div class="chat-history">
+                {% for item in chat_history %}
+                <div class="chat-message {% if item.role == 'user' %}user-message{% else %}ai-message{% endif %}">
+                    <strong>{{ item.role }}:</strong> {{ item.content }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <a href="/search" class="btn">Ask Another Question</a>
+</div>
+
+<script>
+document.getElementById('toggleDetails').addEventListener('click', function() {
+    const content = document.getElementById('detailsContent');
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        this.textContent = 'Hide Technical Details';
+    } else {
+        content.style.display = 'none';
+        this.textContent = 'Show Technical Details';
+    }
+});
+</script>
+{% endblock %}
